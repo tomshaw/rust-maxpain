@@ -58,6 +58,10 @@ fn calculate_max_pain(option_chain: &HashMap<i64, (f64, f64)>) -> f64 {
     max_pain_strike
 }
 
+fn calculate_interest(principal: f64, rate: f64, time: f64) -> f64 {
+    principal * rate * time / 100.0
+}
+
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let args: Vec<String> = env::args().collect();
@@ -74,6 +78,15 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     let max_pain_strike = calculate_max_pain(&option_chain);
     println!("The max pain strike price is: {}", max_pain_strike);
+
+    // Calculate interest for each strike price
+    let rate = 5.0;
+    let time = 1.0;
+    for (strike_price, _) in &option_chain {
+        let principal = *strike_price as f64;
+        let interest = calculate_interest(principal, rate, time);
+        println!("The interest for strike price {} is: {}", strike_price, interest);
+    }
 
     Ok(())
 }
